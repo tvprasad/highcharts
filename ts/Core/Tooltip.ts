@@ -1504,6 +1504,7 @@ class Tooltip {
          * @param {number} anchorY The partial tooltip anchor y position
          * @param {boolean} isHeader Whether the partial tooltip is a header
          * @param {number} boxWidth Width of the partial tooltip
+         * @param {boolean} [alignedLeft] Aligns to the left by default
          * @return {Highcharts.PositionObject} Returns the partial tooltip x and
          * y position
          */
@@ -1694,7 +1695,11 @@ class Tooltip {
         }, []);
 
         // If overflow left then align all labels to the right
-        if (!positioner && boxes.some((box): boolean => box.x < bounds.left)) {
+        // if they do not overflow to the right
+        if (!positioner && boxes.some((box): boolean =>
+            box.x < bounds.left &&
+            box.point.plotX + box.boxWidth < bounds.right
+        )) {
             boxes = boxes.map((box): Record<string, any> => {
                 const { x, y } = defaultPositioner(
                     box.anchorX,

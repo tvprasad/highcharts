@@ -998,6 +998,7 @@ var Tooltip = /** @class */ (function () {
          * @param {number} anchorY The partial tooltip anchor y position
          * @param {boolean} isHeader Whether the partial tooltip is a header
          * @param {number} boxWidth Width of the partial tooltip
+         * @param {boolean} [alignedLeft] Aligns to the left by default
          * @return {Highcharts.PositionObject} Returns the partial tooltip x and
          * y position
          */
@@ -1129,7 +1130,11 @@ var Tooltip = /** @class */ (function () {
             return boxes;
         }, []);
         // If overflow left then align all labels to the right
-        if (!positioner && boxes.some(function (box) { return box.x < bounds.left; })) {
+        // if they do not overflow to the right
+        if (!positioner && boxes.some(function (box) {
+            return box.x < bounds.left &&
+                box.point.plotX + box.boxWidth < bounds.right;
+        })) {
             boxes = boxes.map(function (box) {
                 var _a = defaultPositioner(box.anchorX, box.anchorY, box.point.isHeader, box.boxWidth, false), x = _a.x, y = _a.y;
                 return extend(box, {
