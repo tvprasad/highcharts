@@ -99,7 +99,7 @@ rangeSelector: {
 		text: '1m',
 		events: {
 			click: function() {
-				alert(‘Clicked button’);
+				alert("Clicked button");
 			}
 		}
 	}, {
